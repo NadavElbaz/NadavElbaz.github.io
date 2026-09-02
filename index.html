@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nadav Elbaz | Risk Data Analyst</title>
+<meta name="description" content="Nadav Elbaz — Risk Data Analyst specializing in fraud detection, payment analytics, and data-driven risk strategy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+  <a href="#home" class="logo">NE</a>
+  <nav>
+    <a href="#home" class="active">HOME</a>
+    <a href="#about">ABOUT</a>
+    <a href="#skills">SKILLS</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+</header>
+
+<section id="home" class="hero">
+  <div class="hero-text">
+    <p class="hero-greeting">Hey! I'm</p>
+    <h1>Nadav Elbaz</h1>
+    <p class="hero-role">A Risk Data Analyst who turns transactions into truth.</p>
+    <p class="hero-sub">I detect fraud, protect revenue, and build the dashboards that catch problems before they become losses.</p>
+    <a href="#about" class="btn">ABOUT ME</a>
+  </div>
+  <div class="hero-photo">
+    <div class="photo-circle">
+      <img src="assets/profile.jpg" alt="Nadav Elbaz" onerror="this.parentElement.classList.add('no-photo')">
+      <span class="initials">NE</span>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <h2>About Me</h2>
+  <div class="about-content">
+    <p>Hi, I'm Nadav Elbaz, a Risk Data Analyst at <a href="https://www.workiz.com/" target="_blank" rel="noopener">Workiz</a> where I hunt down fraud patterns hiding in millions of transactions. I turn raw payment and behavioral data into clear signals — building SQL pipelines and Looker dashboards in BigQuery that help Finance and Product teams catch anomalies before they become chargebacks.</p>
+    <p>I've spent my career translating data into decisions, from audience analytics at Israel's public broadcaster to implementation work in fintech, and I'm always looking for the next inefficiency to optimize.</p>
+  </div>
+</section>
+
+<section id="skills" class="skills">
+  <h2>Tools &amp; Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <span class="skill-icon">◆</span>
+      <h3>SQL &amp; BigQuery</h3>
+      <p>Large-scale transactional &amp; behavioral analysis</p>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">◆</span>
+      <h3>Looker &amp; Tableau</h3>
+      <p>Real-time dashboards for Finance &amp; Product</p>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">◆</span>
+      <h3>Stripe &amp; Adyen</h3>
+      <p>Payment platform risk &amp; fraud tooling</p>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">◆</span>
+      <h3>Fraud &amp; Risk Strategy</h3>
+      <p>Anomaly detection &amp; chargeback reduction</p>
+    </div>
+  </div>
+</section>
+
+<footer id="contact" class="footer">
+  <h2>Get in Touch</h2>
+  <p><a href="mailto:nadav.elbaz@workiz.com">nadav.elbaz@workiz.com</a></p>
+  <p><a href="https://www.linkedin.com/in/nadavelbaz/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a href="https://github.com/NadavElbaz" target="_blank" rel="noopener">GitHub</a></p>
+  <p class="copyright">&copy; <span id="year"></span> Nadav Elbaz</p>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
