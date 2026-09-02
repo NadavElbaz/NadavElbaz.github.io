@@ -256,11 +256,22 @@ h1, h2, h3 { font-weight: 800; }
   padding: 90px 6%;
 }
 
+.values-subhead {
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 20px;
+}
+
+.values-subhead:not(:first-of-type) { margin-top: 48px; }
+
 .values-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
   max-width: 1200px;
+  margin-bottom: 8px;
 }
 
 .value-card {
@@ -388,43 +399,6 @@ h1, h2, h3 { font-weight: 800; }
   .honor-card { grid-column: span 1; }
 }
 
-/* Value Prop */
-.value-prop {
-  background: var(--bg-black);
-  padding: 90px 6%;
-}
-
-.value-prop-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  max-width: 1200px;
-}
-
-.value-prop-card {
-  background: var(--bg-dark);
-  border-radius: 8px;
-  padding: 32px 24px;
-  border-left: 3px solid var(--blue-light);
-}
-
-.value-prop-icon {
-  color: var(--blue-light);
-  font-size: 20px;
-  display: block;
-  margin-bottom: 14px;
-}
-
-.value-prop-card h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.value-prop-card p {
-  color: var(--gray);
-  font-size: 14px;
-}
-
 /* Projects */
 .projects {
   background: var(--bg-dark);
@@ -531,6 +505,7 @@ h1, h2, h3 { font-weight: 800; }
   .hero { text-align: center; justify-content: center; }
   .hero-text { text-align: center; }
   .hero-sub { margin-left: auto; margin-right: auto; }
-  .about h2, .experience h2, .values h2, .skills h2, .courses h2, .beyond h2, .projects h2, .value-prop h2, .footer h2 { text-align: center; letter-spacing: 3px; font-size: 30px; }
+  .about h2, .experience h2, .values h2, .skills h2, .courses h2, .beyond h2, .projects h2, .footer h2 { text-align: center; letter-spacing: 3px; font-size: 30px; }
+  .values-subhead { text-align: center; }
   .timeline { padding-left: 24px; }
 }

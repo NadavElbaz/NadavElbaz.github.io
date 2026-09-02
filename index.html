@@ -21,7 +21,6 @@
     <a href="#values">VALUES</a>
     <a href="#skills">SKILLS</a>
     <a href="#courses">COURSES</a>
-    <a href="#value-prop">VALUE</a>
     <a href="#projects">PROJECTS</a>
     <a href="#beyond">BEYOND</a>
     <a href="#contact">CONTACT</a>
@@ -80,7 +79,8 @@
 </section>
 
 <section id="values" class="values">
-  <h2>My Agenda &amp; Values</h2>
+  <h2>Values &amp; What I Bring</h2>
+  <h3 class="values-subhead">My Values</h3>
   <div class="values-grid">
     <div class="value-card">
       <span class="value-icon">◆</span>
@@ -101,6 +101,30 @@
       <span class="value-icon">◆</span>
       <h3>Collaboration</h3>
       <p>The best risk strategies are built cross-functionally, with Finance, Product, and Engineering at the table.</p>
+    </div>
+  </div>
+
+  <h3 class="values-subhead">What I Bring to a Team</h3>
+  <div class="values-grid">
+    <div class="value-card">
+      <span class="value-icon">◆</span>
+      <h3>Revenue Protection</h3>
+      <p>I catch fraud patterns before they turn into chargebacks and lost revenue.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">◆</span>
+      <h3>Decisions, Not Just Dashboards</h3>
+      <p>I build reporting that Finance and Product teams actually act on, not just look at.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">◆</span>
+      <h3>Speed Through Automation</h3>
+      <p>I automate the repetitive so the team can spend time on what actually needs judgment.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">◆</span>
+      <h3>Cross-Functional Trust</h3>
+      <p>I work directly with Finance, Product, and Engineering to turn insights into strategy.</p>
     </div>
   </div>
 </section>
@@ -201,32 +225,6 @@
   </div>
 </section>
 
-<section id="value-prop" class="value-prop">
-  <h2>The Value I Bring</h2>
-  <div class="value-prop-grid">
-    <div class="value-prop-card">
-      <span class="value-prop-icon">◆</span>
-      <h3>Revenue Protection</h3>
-      <p>I catch fraud patterns before they turn into chargebacks and lost revenue.</p>
-    </div>
-    <div class="value-prop-card">
-      <span class="value-prop-icon">◆</span>
-      <h3>Decisions, Not Just Dashboards</h3>
-      <p>I build reporting that Finance and Product teams actually act on, not just look at.</p>
-    </div>
-    <div class="value-prop-card">
-      <span class="value-prop-icon">◆</span>
-      <h3>Speed Through Automation</h3>
-      <p>I automate the repetitive so the team can spend time on what actually needs judgment.</p>
-    </div>
-    <div class="value-prop-card">
-      <span class="value-prop-icon">◆</span>
-      <h3>Cross-Functional Trust</h3>
-      <p>I work directly with Finance, Product, and Engineering to turn insights into strategy.</p>
-    </div>
-  </div>
-</section>
-
 <section id="projects" class="projects">
   <h2>Projects</h2>
   <div class="projects-grid">
@@ -266,7 +264,7 @@
 
 <footer id="contact" class="footer">
   <h2>Get in Touch</h2>
-  <p><a href="mailto:nadav.elbaz@workiz.com">nadav.elbaz@workiz.com</a></p>
+  <p><a href="mailto:nadavelbaz2@gmail.com">nadavelbaz2@gmail.com</a></p>
   <p><a href="https://www.linkedin.com/in/nadavelbaz/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a href="https://github.com/NadavElbaz" target="_blank" rel="noopener">GitHub</a></p>
   <p class="copyright">&copy; <span id="year"></span> Nadav Elbaz</p>
 </footer>
@@ -293,6 +291,16 @@ document.getElementById('year').textContent = new Date().getFullYear();
     toggle.textContent = theme === 'light' ? '☀️' : '🌙';
   }
 })();
+
+document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+  link.addEventListener('click', function (e) {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.pushState(null, '', link.getAttribute('href'));
+  });
+});
 </script>
 </body>
 </html>
