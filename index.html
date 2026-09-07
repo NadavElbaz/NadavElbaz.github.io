@@ -335,9 +335,6 @@ document.getElementById('year').textContent = new Date().getFullYear();
     el.style.top = `${-maxOffset}px`;
     el.style.height = `${height}px`;
   }
-  function sizeAll() { layers.forEach(function (l) { sizeLayer(l.el, l.rate); }); }
-  sizeAll();
-  window.addEventListener('resize', sizeAll);
 
   // A percentage like top:12% means 12% of the OVERSIZED layer, not 12% of
   // what's actually on screen at page load — which is why the moon and half
@@ -348,78 +345,52 @@ document.getElementById('year').textContent = new Date().getFullYear();
     return layerHeight(rate).maxOffset + window.innerHeight * fraction;
   }
 
-  (function generateStars() {
-    const canvas = document.getElementById('stars-canvas');
-    const ctx = canvas.getContext('2d');
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const starsRate = layers.find(function (l) { return l.el.id === 'sky-stars'; }).rate;
-    let stars = [];
+  const starsRate = layers.find(function (l) { return l.el.id === 'sky-stars'; }).rate;
+  const cloudsRate = layers.find(function (l) { return l.el.id === 'sky-clouds'; }).rate;
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let stars = [];
 
-    function size() {
-      const w = window.innerWidth;
-      const h = layerHeight(starsRate).height;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.round((w * h) / 9000);
-      stars = Array.from({ length: count }, function () {
-        return {
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: Math.random() * 1.3 + 0.4,
-          base: Math.random() * 0.5 + 0.3,
-          amp: Math.random() * 0.5,
-          phase: Math.random() * Math.PI * 2,
-          speed: Math.random() * 0.0015 + 0.0006,
-        };
-      });
+  function sizeStarsCanvas() {
+    const w = window.innerWidth;
+    const h = layerHeight(starsRate).height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.round((w * h) / 9000);
+    stars = Array.from({ length: count }, function () {
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.3 + 0.4,
+        base: Math.random() * 0.5 + 0.3,
+        amp: Math.random() * 0.5,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.0015 + 0.0006,
+      };
+    });
+  }
+
+  function drawStars(t) {
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#ffffff';
+    for (const s of stars) {
+      const twinkle = reduceMotion ? s.base : s.base + s.amp * Math.sin(t * s.speed + s.phase);
+      ctx.globalAlpha = Math.max(0, Math.min(1, twinkle));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
     }
+    ctx.globalAlpha = 1;
+  }
 
-    function draw(t) {
-      const w = canvas.width / dpr;
-      const h = canvas.height / dpr;
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = '#ffffff';
-      for (const s of stars) {
-        const twinkle = reduceMotion ? s.base : s.base + s.amp * Math.sin(t * s.speed + s.phase);
-        ctx.globalAlpha = Math.max(0, Math.min(1, twinkle));
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
+  const clouds = document.getElementById('sky-clouds');
 
-    size();
-    window.addEventListener('resize', size);
-
-    if (reduceMotion) {
-      draw(0);
-    } else {
-      let last = 0;
-      (function loop(t) {
-        if (t - last > 100) { draw(t); last = t; } // ~10fps is plenty for a slow twinkle
-        requestAnimationFrame(loop);
-      })(0);
-    }
-
-    function placeMoon() {
-      document.querySelector('.moon').style.top = `${visibleTop(starsRate, 0.12)}px`;
-    }
-    placeMoon();
-    window.addEventListener('resize', placeMoon);
-  })();
-
-  (function generateClouds() {
-    const clouds = document.getElementById('sky-clouds');
-    const cloudsRate = layers.find(function (l) { return l.el === clouds; }).rate;
-
-    function placeSun() {
-      document.querySelector('.sun').style.top = `${visibleTop(cloudsRate, 0.09)}px`;
-    }
-    placeSun();
-    window.addEventListener('resize', placeSun);
-
+  function generateClouds() {
+    clouds.querySelectorAll('.cloud').forEach(function (c) { c.remove(); });
     const cloudCount = 7;
     let cloudsHTML = '';
     for (let i = 0; i < cloudCount; i++) {
@@ -431,7 +402,38 @@ document.getElementById('year').textContent = new Date().getFullYear();
       cloudsHTML += `<span class="cloud" style="width:${w}px;height:${h}px;top:${top}px;--dur:${dur}s;animation-delay:${delay}s"></span>`;
     }
     clouds.insertAdjacentHTML('beforeend', cloudsHTML);
-  })();
+  }
+
+  // Sizing/placement all depends on the hero's rendered height, which can
+  // still change after this first pass — most commonly because the Google
+  // Fonts file is still downloading, so the hero is briefly laid out in a
+  // fallback font with different metrics. Re-running once fonts finish (and
+  // once more on full window load, as a catch-all) means the final layout
+  // is always based on the page's true, settled height rather than
+  // whatever it happened to measure mid-load.
+  function layoutSky() {
+    layers.forEach(function (l) { sizeLayer(l.el, l.rate); });
+    sizeStarsCanvas();
+    document.querySelector('.moon').style.top = `${visibleTop(starsRate, 0.12)}px`;
+    document.querySelector('.sun').style.top = `${visibleTop(cloudsRate, 0.09)}px`;
+    generateClouds();
+  }
+  layoutSky();
+  window.addEventListener('resize', layoutSky);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(layoutSky);
+  }
+  window.addEventListener('load', layoutSky);
+
+  if (reduceMotion) {
+    drawStars(0);
+  } else {
+    let last = 0;
+    (function loop(t) {
+      if (t - last > 100) { drawStars(t); last = t; } // ~10fps is plenty for a slow twinkle
+      requestAnimationFrame(loop);
+    })(0);
+  }
 
   let ticking = false;
   function onScroll() {
