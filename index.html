@@ -12,6 +12,15 @@
 </head>
 <body>
 
+<div class="parallax-layer" id="sky"></div>
+<div class="parallax-layer" id="sky-stars">
+  <canvas id="stars-canvas"></canvas>
+  <div class="moon"></div>
+</div>
+<div class="parallax-layer" id="sky-clouds">
+  <div class="sun"></div>
+</div>
+
 <header class="navbar">
   <a href="#home" class="logo">NE</a>
   <nav>
@@ -290,6 +299,156 @@ document.getElementById('year').textContent = new Date().getFullYear();
     root.setAttribute('data-theme', theme);
     toggle.textContent = theme === 'light' ? '☀️' : '🌙';
   }
+})();
+
+(function () {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Three planes, three speeds: sky (farthest) moves least, clouds
+  // (nearest) move most — real depth comes from the layers shifting
+  // relative to EACH OTHER, not just relative to the page content.
+  const layers = [
+    { el: document.getElementById('sky'), rate: 0.35 },
+    { el: document.getElementById('sky-stars'), rate: 0.12 },
+    { el: document.getElementById('sky-clouds'), rate: 0.55 },
+  ];
+
+  // The sky only shows through the hero — every section below it paints
+  // its own opaque background over these fixed layers — so they only need
+  // to stay correctly sized while the hero itself is still on screen, not
+  // across the page's full scroll range. Sizing them to the whole page (as
+  // a page-wide parallax background would need) stretched the star/cloud
+  // scatter across a mostly-invisible area, thinning them out to nothing.
+  // Height depends only on the hero's own size and each layer's rate — never
+  // on the layer's current clientWidth/clientHeight, because the stars
+  // canvas is display:none half the time (whichever theme isn't active) and
+  // a hidden element reports zero size, which would size its drawing
+  // buffer to 0x0 and leave it permanently blank even after a later
+  // theme toggle makes it visible.
+  function layerHeight(rate) {
+    const hero = document.getElementById('home');
+    const maxOffset = Math.ceil(hero.offsetHeight * rate) + 80;
+    return { maxOffset, height: window.innerHeight + maxOffset * 2 };
+  }
+  function sizeLayer(el, rate) {
+    const { maxOffset, height } = layerHeight(rate);
+    el.style.top = `${-maxOffset}px`;
+    el.style.height = `${height}px`;
+  }
+  function sizeAll() { layers.forEach(function (l) { sizeLayer(l.el, l.rate); }); }
+  sizeAll();
+  window.addEventListener('resize', sizeAll);
+
+  // A percentage like top:12% means 12% of the OVERSIZED layer, not 12% of
+  // what's actually on screen at page load — which is why the moon and half
+  // the clouds landed above the visible area entirely. This maps a 0–1
+  // fraction of the viewport itself onto the layer's local coordinates, so
+  // "12% down the screen" actually lands 12% down the screen.
+  function visibleTop(rate, fraction) {
+    return layerHeight(rate).maxOffset + window.innerHeight * fraction;
+  }
+
+  (function generateStars() {
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const starsRate = layers.find(function (l) { return l.el.id === 'sky-stars'; }).rate;
+    let stars = [];
+
+    function size() {
+      const w = window.innerWidth;
+      const h = layerHeight(starsRate).height;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.round((w * h) / 9000);
+      stars = Array.from({ length: count }, function () {
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.3 + 0.4,
+          base: Math.random() * 0.5 + 0.3,
+          amp: Math.random() * 0.5,
+          phase: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.0015 + 0.0006,
+        };
+      });
+    }
+
+    function draw(t) {
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#ffffff';
+      for (const s of stars) {
+        const twinkle = reduceMotion ? s.base : s.base + s.amp * Math.sin(t * s.speed + s.phase);
+        ctx.globalAlpha = Math.max(0, Math.min(1, twinkle));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    size();
+    window.addEventListener('resize', size);
+
+    if (reduceMotion) {
+      draw(0);
+    } else {
+      let last = 0;
+      (function loop(t) {
+        if (t - last > 100) { draw(t); last = t; } // ~10fps is plenty for a slow twinkle
+        requestAnimationFrame(loop);
+      })(0);
+    }
+
+    function placeMoon() {
+      document.querySelector('.moon').style.top = `${visibleTop(starsRate, 0.12)}px`;
+    }
+    placeMoon();
+    window.addEventListener('resize', placeMoon);
+  })();
+
+  (function generateClouds() {
+    const clouds = document.getElementById('sky-clouds');
+    const cloudsRate = layers.find(function (l) { return l.el === clouds; }).rate;
+
+    function placeSun() {
+      document.querySelector('.sun').style.top = `${visibleTop(cloudsRate, 0.09)}px`;
+    }
+    placeSun();
+    window.addEventListener('resize', placeSun);
+
+    const cloudCount = 7;
+    let cloudsHTML = '';
+    for (let i = 0; i < cloudCount; i++) {
+      const w = Math.round(Math.random() * 140 + 120);
+      const h = Math.round(w * 0.4);
+      const top = visibleTop(cloudsRate, Math.random() * 0.7 + 0.05).toFixed(1);
+      const dur = Math.round(Math.random() * 60 + 70);
+      const delay = -Math.round(Math.random() * dur);
+      cloudsHTML += `<span class="cloud" style="width:${w}px;height:${h}px;top:${top}px;--dur:${dur}s;animation-delay:${delay}s"></span>`;
+    }
+    clouds.insertAdjacentHTML('beforeend', cloudsHTML);
+  })();
+
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      const y = window.scrollY;
+      if (!reduceMotion) {
+        layers.forEach(function (l) {
+          l.el.style.transform = `translateY(${Math.round(y * l.rate)}px)`;
+        });
+      }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
 
 document.querySelectorAll('a[href^="#"]').forEach(function (link) {
