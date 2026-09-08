@@ -290,6 +290,30 @@ h1, h2, h3 { font-weight: 800; }
 .photo-circle.no-photo img { display: none; }
 .photo-circle.no-photo .initials { display: block; }
 
+/* Story */
+.story {
+  background: var(--bg-black);
+  padding: 90px 6%;
+  text-align: center;
+}
+
+.story h2 { text-align: center; }
+
+.story-video {
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.story-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--bg-dark);
+}
+
 /* About */
 .about {
   background: var(--bg-dark);
@@ -632,7 +656,7 @@ h1, h2, h3 { font-weight: 800; }
   .hero { text-align: center; justify-content: center; }
   .hero-text { text-align: center; }
   .hero-sub { margin-left: auto; margin-right: auto; }
-  .about h2, .experience h2, .values h2, .skills h2, .courses h2, .beyond h2, .projects h2, .footer h2 { text-align: center; letter-spacing: 3px; font-size: 30px; }
+  .about h2, .story h2, .experience h2, .values h2, .skills h2, .courses h2, .beyond h2, .projects h2, .footer h2 { text-align: center; letter-spacing: 3px; font-size: 30px; }
   .values-subhead { text-align: center; }
   .timeline { padding-left: 24px; }
 }
