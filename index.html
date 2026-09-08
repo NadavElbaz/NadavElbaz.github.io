@@ -435,6 +435,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
     })(0);
   }
 
+  const navbar = document.querySelector('.navbar');
+  const NAVBAR_SHRINK_AT = 40;
+
   let ticking = false;
   function onScroll() {
     if (ticking) return;
@@ -446,6 +449,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
           l.el.style.transform = `translateY(${Math.round(y * l.rate)}px)`;
         });
       }
+      navbar.classList.toggle('scrolled', y > NAVBAR_SHRINK_AT);
       ticking = false;
     });
   }

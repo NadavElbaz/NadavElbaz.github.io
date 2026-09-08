@@ -47,11 +47,20 @@ h1, h2, h3 { font-weight: 800; }
 
 /* Navbar */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 24px 6%;
   background: var(--bg-black);
+  transition: background 0.25s ease, padding 0.25s ease, box-shadow 0.25s ease;
+}
+
+.navbar.scrolled {
+  padding: 12px 6%;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
 }
 
 .logo {
@@ -65,8 +74,15 @@ h1, h2, h3 { font-weight: 800; }
   font-weight: 800;
   font-size: 14px;
   letter-spacing: 1px;
+  transition: width 0.25s ease, height 0.25s ease, font-size 0.25s ease;
 }
 .logo:hover { text-decoration: none; border-color: var(--blue-light); }
+
+.navbar.scrolled .logo {
+  width: 34px;
+  height: 34px;
+  font-size: 11px;
+}
 
 .navbar nav a {
   color: var(--white);
@@ -74,9 +90,12 @@ h1, h2, h3 { font-weight: 800; }
   font-size: 14px;
   letter-spacing: 1px;
   margin-left: 36px;
+  transition: font-size 0.25s ease;
 }
 .navbar nav a.active,
 .navbar nav a:hover { color: var(--blue-light); text-decoration: none; }
+
+.navbar.scrolled nav a { font-size: 12.5px; }
 
 .theme-toggle {
   background: none;
@@ -90,9 +109,15 @@ h1, h2, h3 { font-weight: 800; }
   align-items: center;
   justify-content: center;
   margin-left: 24px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, width 0.25s ease, height 0.25s ease;
 }
 .theme-toggle:hover { border-color: var(--blue-light); transform: scale(1.06); }
+
+.navbar.scrolled .theme-toggle {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
 
 /* Sky parallax — visible only behind the hero, since every section below it
    has its own opaque background painted on top. Three independent planes,
