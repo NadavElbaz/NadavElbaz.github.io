@@ -23,7 +23,7 @@
 
 <header class="navbar">
   <a href="#home" class="logo">NE</a>
-  <nav>
+  <nav id="nav-links">
     <a href="#home" class="active">HOME</a>
     <a href="#story">STORY</a>
     <a href="#about">ABOUT</a>
@@ -36,6 +36,9 @@
     <a href="#contact">CONTACT</a>
   </nav>
   <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">🌙</button>
+  <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <section id="home" class="hero">
@@ -466,6 +469,31 @@ document.getElementById('year').textContent = new Date().getFullYear();
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+})();
+
+(function () {
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  navToggle.addEventListener('click', function () {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 640) closeMenu();
+  });
 })();
 
 document.querySelectorAll('a[href^="#"]').forEach(function (link) {

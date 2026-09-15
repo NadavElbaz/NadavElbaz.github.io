@@ -119,6 +119,36 @@ h1, h2, h3 { font-weight: 800; }
   font-size: 13px;
 }
 
+/* Hamburger — hidden on desktop, shown only under the mobile breakpoint
+   below, where the full nav link list no longer fits a single row. */
+.nav-toggle {
+  display: none;
+  width: 36px;
+  height: 36px;
+  margin-left: 16px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
 /* Sky parallax — visible only behind the hero, since every section below it
    has its own opaque background painted on top. Three independent planes,
    each fixed to the viewport and nudged by JS with a positive translateY as
@@ -216,7 +246,7 @@ h1, h2, h3 { font-weight: 800; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
   gap: 48px;
   padding: 60px 6% 100px;
   max-width: 1400px;
@@ -651,8 +681,40 @@ h1, h2, h3 { font-weight: 800; }
 }
 
 @media (max-width: 640px) {
-  .navbar { flex-direction: column; gap: 16px; }
-  .navbar nav a { margin: 0 12px; }
+  .nav-toggle { display: flex; }
+
+  #nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--bg-black);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 6%;
+    transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+  }
+
+  #nav-links.open {
+    max-height: 70vh;
+    opacity: 1;
+    overflow-y: auto;
+    padding: 8px 6% 20px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .navbar nav a {
+    margin: 0;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--card-alt);
+  }
+
+  .navbar nav a:last-child { border-bottom: none; }
+
   .hero { text-align: center; justify-content: center; }
   .hero-text { text-align: center; }
   .hero-sub { margin-left: auto; margin-right: auto; }
