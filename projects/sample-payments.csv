@@ -1,0 +1,53 @@
+Job id,Invoice id,Estimate id,Status,First name,Last name,Total payments,Amount,Total fees,Fee,Total net,Net,Date,Transaction type,payout,Transaction method
+,,,,,,67410.05,,-861.62,,66548.43,,,,,
+1054,3054,4054,Paid,Avery,Silva,,1643.34,,-47.96,,1595.38,2026-10-11 13:09:00,Credit card,,Office
+1061,3061,,Paid,Drew,Okafor,,290.28,,-8.72,,281.56,2026-10-11 11:30:45,Credit card,,Office
+,,,Paid,Riley,Chen,,24500,,-245,,24255,2026-10-10 3:12:44,Bank transfer (ACH),,Client portal
+1041,3041,,Paid,Avery,Bianchi,,320.9,,0,,320.9,2026-10-10 17:35:26,Check,,Technician app
+1059,3059,,Paid,Parker,Rossi,,334.68,,-3.35,,331.33,2026-10-10 16:13:27,Bank transfer (ACH),,Client portal
+1047,3047,,Paid,Sage,Tanaka,,921.62,,0,,921.62,2026-10-10 11:49:08,Cash,,Technician app
+1053,3053,4053,Paid,Blake,Alvarez,,1303.21,,-38.09,,1265.12,2026-10-09 9:39:50,Credit card,,Technician app
+1051,3051,4051,Paid,Blake,Tanaka,,498.83,,0,,498.83,2026-10-09 8:53:18,Check,,Office
+1074,3074,4074,Paid,Peyton,Nguyen,,344.78,,-10.3,,334.48,2026-10-09 8:46:07,Credit card,,Client portal
+,,,Paid,Sam,Patel,,2950,,-85.85,,2864.15,2026-10-09 2:21:33,Credit card,,Client portal
+,,,Failed,Sam,Patel,,12,,,,,2026-10-09 2:17:41,Credit card,,Client portal
+,,,Failed,Sam,Patel,,10,,,,,2026-10-09 2:16:02,Credit card,,Client portal
+,,,Failed,Sam,Patel,,5,,,,,2026-10-09 2:15:10,Credit card,,Client portal
+,,,Failed,Sam,Patel,,5,,,,,2026-10-09 2:14:05,Credit card,,Client portal
+1046,3046,4046,Paid,Peyton,Costa,,339.86,,-10.16,,329.7,2026-10-09 17:56:31,Credit card,,Client portal
+1066,3066,4066,Paid,Drew,Nguyen,,447.57,,-13.28,,434.29,2026-10-09 17:50:34,Credit card,,Client portal
+1058,3058,4058,Paid,Devon,Novak,,1047.61,,0,,1047.61,2026-10-09 15:20:43,Cash,,Technician app
+1060,3060,,Paid,Harper,Silva,,625.87,,-18.45,,607.42,2026-10-09 14:02:12,Credit card,,Technician app
+1072,3072,,Paid,Harper,Alvarez,,1082.23,,0,,1082.23,2026-10-09 12:24:18,Cash,,Office
+1062,3062,,Paid,Alex,Kowalski,,223.47,,-2.23,,221.24,2026-10-09 10:10:42,Bank transfer (ACH),,Client portal
+1082,3082,4082,Paid,Morgan,Ellis,,,,-0.3,,,2026-10-08 9:15:02,Credit card,,Client portal
+1050,3050,4050,Paid,Alex,Okafor,,1083.03,,-31.71,,1051.32,2026-10-08 16:59:31,Credit card,PO-908,Office
+1064,3064,,Paid,Rowan,Ferreira,,801.73,,-23.55,,778.18,2026-10-08 15:07:33,Credit card,PO-908,Client portal
+1065,3065,,Paid,Skyler,Rossi,,780.46,,0,,780.46,2026-10-07 16:50:53,Cash,PO-907,Office
+1049,3049,,Paid,Logan,Costa,,617.82,,0,,617.82,2026-10-07 14:12:18,Cash,PO-907,Office
+1079,3079,,Paid,Jordan,Reyes,,195,,-5.96,,189.04,2026-10-07 11:24:23,Credit card,,Client portal
+1078,3078,,Paid,Jordan,Reyes,,195,,-5.96,,189.04,2026-10-07 11:12:22,Credit card,,Client portal
+1077,3077,,Paid,Jordan,Reyes,,195,,-5.96,,189.04,2026-10-07 10:31:21,Credit card,,Client portal
+1076,3076,4076,Paid,Jordan,Reyes,,195,,-5.96,,189.04,2026-10-07 10:05:20,Credit card,,Client portal
+1044,3044,4044,Paid,Devon,Petrov,,674,,0,,674,2026-10-06 9:35:34,Cash,PO-906,Technician app
+1080,3080,4080,Paid,Hayden,Brooks,,8200,,-82,,8118,2026-10-06 14:20:11,Bank transfer (ACH),PO-906,Client portal
+1045,3045,4045,Paid,Harper,Kowalski,,1143.84,,-11.44,,1132.4,2026-10-06 13:29:27,Bank transfer (ACH),PO-906,Client portal
+1068,3068,4068,Paid,Avery,Alvarez,,485.39,,-14.38,,471.01,2026-10-06 10:41:40,Credit card,PO-906,Technician app
+1063,3063,4063,Paid,Emerson,Tanaka,,373.32,,-11.13,,362.19,2026-10-06 10:16:29,Credit card,PO-906,Client portal
+1073,3073,4073,Paid,Devon,Okafor,,587.39,,-17.33,,570.06,2026-10-05 9:19:49,Credit card,PO-905,Technician app
+1067,3067,,Paid,Finley,Tanaka,,317.49,,-9.51,,307.98,2026-10-05 16:08:06,Credit card,PO-905,Client portal
+1081,3081,4081,Paid,Sage,Whitfield,,4900,,0,,4900,2026-10-05 11:03:48,Check,PO-905,Office
+,,,,,,,410,,0,,410,2026-10-04 15:08:30,,,
+1043,3043,,Paid,Avery,Dubois,,1967.66,,0,,1967.66,2026-10-04 14:16:22,Check,PO-904,Office
+1055,3055,,Paid,Peyton,Ivanov,,731.03,,-21.5,,709.53,2026-10-03 16:14:30,Credit card,PO-903,Technician app
+1048,3048,,Paid,Sage,Rossi,,344.57,,-3.45,,341.12,2026-10-03 15:56:14,Bank transfer (ACH),PO-903,Technician app
+1075,3075,4075,Disputed,Casey,Morgan,,3150,,-91.65,,3058.35,2026-10-03 13:41:09,Credit card,PO-903,Client portal
+1056,3056,,Paid,Finley,Mendes,,163.02,,-5.03,,157.99,2026-10-03 10:50:50,Credit card,PO-903,Technician app
+1069,3069,,Paid,Parker,Tanaka,,523.05,,0,,523.05,2026-10-02 8:26:55,Cash,PO-902,Office
+1084,3084,4084,Refunded,Avery,Silva,,220,,-6.68,,213.32,2026-10-02 16:45:00,Credit card,PO-902,Office
+1052,3052,4052,Paid,Harper,Haddad,,348.15,,0,,348.15,2026-10-02 12:57:31,Cash,PO-902,Office
+1057,3057,4057,Paid,Reese,Mendes,,264.88,,-7.98,,256.9,2026-10-01 9:24:56,Credit card,PO-901,Client portal
+1042,3042,4042,Paid,Kendall,Larsen,,613.58,,0,,613.58,2026-10-01 17:05:07,Check,PO-901,Technician app
+1071,3071,4071,Paid,Peyton,Novak,,487.24,,-4.87,,482.37,2026-10-01 14:20:38,Bank transfer (ACH),PO-901,Technician app
+1070,3070,,Paid,Skyler,Alvarez,,558.15,,0,,558.15,2026-10-01 12:07:06,Cash,PO-901,Technician app
+1083,3083,4083,Paid,Kai,Lindgren,,640,,-18.86,,621.14,pending,Credit card,,Technician app

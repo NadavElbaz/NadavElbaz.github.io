@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T626JJBN29"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T626JJBN29');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Risk Checker | Nadav Elbaz</title>
+<meta name="description" content="Upload a payments CSV and see every payment sorted into Fraud, Review, Legit, or Not enough information — with the reason for each. Runs entirely in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css?v=20261111">
+<link rel="stylesheet" href="payment-risk.css?v=6">
+</head>
+<body class="rc-page">
+
+<header class="navbar">
+  <a href="../index.html" class="logo">NE</a>
+  <nav id="nav-links">
+    <a href="../index.html">HOME</a>
+    <a href="../index.html#story">STORY</a>
+    <a href="../index.html#about">ABOUT</a>
+    <a href="../index.html#experience">EXPERIENCE</a>
+    <a href="../index.html#values">VALUES</a>
+    <a href="../index.html#skills">SKILLS</a>
+    <a href="../index.html#courses">COURSES</a>
+    <a href="../index.html#projects" class="active">PROJECTS</a>
+    <a href="../index.html#beyond">BEYOND</a>
+    <a href="../index.html#contact">CONTACT</a>
+  </nav>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">🌙</button>
+  <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<main>
+  <section class="rc-hero">
+    <p class="rc-eyebrow">Project · Proof of concept</p>
+    <h1>Payment Risk Checker</h1>
+    <p class="rc-lede">Upload a payments CSV. Every payment is sorted into <strong>Fraud</strong>, <strong>Review</strong>, <strong>Legit</strong> or <strong>Not enough information</strong>, with the reason shown for each one.</p>
+    <ul class="rc-trust" aria-label="Privacy and limits">
+      <li>Runs in your browser — your file is never uploaded</li>
+      <li>Rule-based and explainable, not a black box</li>
+      <li>Sample data is synthetic</li>
+    </ul>
+  </section>
+
+  <!-- Step 1 -->
+  <section class="rc-card" id="rc-step-upload" aria-labelledby="rc-h-upload">
+    <h2 id="rc-h-upload"><span class="rc-stepno">1</span> Upload your payments file</h2>
+    <div class="rc-drop" id="rc-drop" tabindex="0" role="button" aria-label="Choose a CSV file or drop it here">
+      <p class="rc-drop-title">Drop a CSV here, or choose a file</p>
+      <p class="rc-drop-sub">Needs an amount, a date and a customer column (name, email or card last 4), and at least 20 payments. Comma, semicolon or tab separated. More columns means more checks. Up to 10&nbsp;MB.</p>
+      <div class="rc-actions">
+        <button type="button" class="rc-btn rc-btn-primary" id="rc-choose">Choose CSV file</button>
+        <button type="button" class="rc-btn" id="rc-sample">Try the sample file</button>
+      </div>
+      <input type="file" id="rc-file" accept=".csv,.txt,text/csv" hidden>
+    </div>
+    <p class="rc-note"><a href="sample-payments.csv" download>Download the sample CSV</a> to see the expected shape. It mirrors a typical CRM payments export: a totals row on top, then one row per payment.</p>
+    <p class="rc-msg" id="rc-msg" role="status" aria-live="polite"></p>
+    <div class="rc-intake" id="rc-upload-issue" aria-live="polite"></div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="rc-card" id="rc-step-map" aria-labelledby="rc-h-map" hidden>
+    <h2 id="rc-h-map"><span class="rc-stepno">2</span> Check your file</h2>
+    <div class="rc-intake" id="rc-intake" aria-live="polite"></div>
+    <div class="rc-fix" id="rc-fix" hidden></div>
+    <input type="file" id="rc-append-file" accept=".csv,.txt,text/csv" hidden>
+    <h3>Column match</h3>
+    <p class="rc-note" id="rc-map-intro"></p>
+    <div id="rc-map"></div>
+    <div class="rc-checks-wrap">
+      <h3>Checks that will run <span id="rc-checks-count"></span></h3>
+      <ul class="rc-checks" id="rc-checks"></ul>
+    </div>
+    <div class="rc-actions">
+      <button type="button" class="rc-btn rc-btn-primary" id="rc-analyze">Analyze payments</button>
+      <button type="button" class="rc-btn" id="rc-reset">Start over</button>
+    </div>
+    <p class="rc-msg" id="rc-map-msg" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="rc-card" id="rc-step-results" aria-labelledby="rc-h-results" hidden>
+    <div class="rc-results-head">
+      <h2 id="rc-h-results" tabindex="-1"><span class="rc-stepno">3</span> Results</h2>
+      <div class="rc-head-tools">
+        <div class="rc-seg" role="group" aria-label="View">
+          <button type="button" data-mode="owner" aria-pressed="true">Business owner</button>
+          <button type="button" data-mode="risk" aria-pressed="false">Risk team</button>
+        </div>
+        <button type="button" class="rc-btn rc-btn-primary rc-dl" id="rc-download">Download results (CSV)</button>
+        <button type="button" class="rc-btn rc-pdf" id="rc-download-pdf">Download results (PDF)</button>
+      </div>
+    </div>
+    <p class="rc-fine rc-dl-note">The PDF tool is loaded from this site when you click it. Your data never leaves your browser.</p>
+    <p class="rc-msg" id="rc-stale" role="status" aria-live="polite"></p>
+    <div class="rc-intake-notes" id="rc-intake-notes"></div>
+    <p class="rc-msg" id="rc-dl-msg" role="status" aria-live="polite"></p>
+    <details class="rc-csv-fallback" id="rc-csv-fallback">
+      <summary>Download didn't start? Copy the CSV instead</summary>
+      <div class="rc-csv-body">
+        <p class="rc-note">Some embedded browsers block file downloads. Copy the text below and paste it into a text file named <code>results.csv</code>, or into a spreadsheet.</p>
+        <button type="button" class="rc-btn" id="rc-copy">Copy to clipboard</button>
+        <textarea id="rc-csv-text" readonly rows="6" aria-label="Results as CSV text"></textarea>
+      </div>
+    </details>
+    <div class="rc-stats" id="rc-stats"></div>
+    <div class="rc-recap" id="rc-recap"></div>
+
+    <div class="rc-table-tools">
+      <label class="rc-search"><span class="rc-sr">Search</span>
+        <input type="search" id="rc-search" placeholder="Search customer or row number" autocomplete="off">
+      </label>
+      <label class="rc-sort"><span>Sort</span>
+        <select id="rc-sort">
+          <option value="risk">Highest risk first</option>
+          <option value="date">Newest first</option>
+          <option value="amount">Largest amount first</option>
+        </select>
+      </label>
+      <span class="rc-count" id="rc-count" aria-live="polite"></span>
+      <button type="button" class="rc-btn rc-dl" id="rc-download-2">Download results (CSV)</button>
+      <button type="button" class="rc-btn rc-pdf" id="rc-download-pdf-2">Download results (PDF)</button>
+    </div>
+    <div class="rc-table-wrap" id="rc-table"></div>
+    <div class="rc-more"><button type="button" class="rc-btn" id="rc-more" hidden>Show more</button></div>
+  </section>
+
+  <!-- How it decides -->
+  <section class="rc-card rc-how" aria-labelledby="rc-h-how">
+    <h2 id="rc-h-how">How it decides</h2>
+    <p>Each payment collects points from the checks below. Some checks compare a payment with the rest of <em>your</em> file (for example, the median amount), so the result is relative to your business, not a global rule.</p>
+    <ul class="rc-bullets">
+      <li><strong>Fraud</strong>: 60 points or more, or the status already shows a dispute, return or reversal.</li>
+      <li><strong>Review</strong>: 30 to 59 points. Worth a quick verification.</li>
+      <li><strong>Legit</strong>: under 30 points, with enough information to judge.</li>
+      <li><strong>Not enough information</strong>: the amount or date is missing, or fewer than 4 checks could run on that row.</li>
+    </ul>
+    <div class="rc-table-wrap"><table class="rc-rules" id="rc-rules-table"></table></div>
+    <p class="rc-fine">This is a proof of concept. It points out payments worth a second look; it can't prove fraud or innocence, and the weights are starting points, not tuned on real data. Use it alongside your payment provider's own tools, not instead of them.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p><a href="../index.html#projects">← Back to my portfolio</a></p>
+  <p class="copyright">&copy; <span id="year"></span> Nadav Elbaz</p>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+(function () {
+  var root = document.documentElement;
+  var toggle = document.getElementById('theme-toggle');
+  var stored = null;
+  try { stored = localStorage.getItem('theme'); } catch (e) {}
+  var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  apply(stored || (prefersLight ? 'light' : 'dark'));
+  toggle.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    apply(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    toggle.textContent = theme === 'light' ? '☀️' : '🌙';
+  }
+
+  var navbar = document.querySelector('.navbar');
+  window.addEventListener('scroll', function () { navbar.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+
+  var navToggle = document.getElementById('nav-toggle');
+  var navLinks = document.getElementById('nav-links');
+  function closeMenu() {
+    navLinks.classList.remove('open'); navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+  navToggle.addEventListener('click', function () {
+    var open = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+  navLinks.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+  window.addEventListener('resize', function () { if (window.innerWidth > 640) closeMenu(); });
+})();
+</script>
+<!-- Print-only copy of the results report (filled just before printing). -->
+<div id="rc-print"></div>
+<script src="payment-risk-engine.js?v=2"></script>
+<script src="payment-risk-ui.js?v=8"></script>
+</body>
+</html>
